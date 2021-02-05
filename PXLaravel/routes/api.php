@@ -25,7 +25,12 @@ Route::get('/waktu', function () {
     return $waktu;
 });
 
-Route::get('gps', function () {
+Route::get('/gps', function () {
+    $gps = Gps::all();
+    return $gps;
+});
+
+Route::get('/onoff', function () {
     $gps = Gps::all();
     return $gps;
 });
@@ -40,6 +45,14 @@ Route::post('/gps/{device}', function (Request $request,$device) {
 });
 
 Route::post('/waktu/{device}', function (Request $request,$device) {
+    $newWaktuData = new Waktu;
+    $newWaktuData->alat = "Alat ".$device;
+    $newWaktuData->detik = $request->detik;
+    $newWaktuData->save();
+    return $newWaktuData;
+});
+
+Route::post('/onoff/{device}', function (Request $request,$device) {
     $newWaktuData = new Waktu;
     $newWaktuData->alat = "Alat ".$device;
     $newWaktuData->detik = $request->detik;
