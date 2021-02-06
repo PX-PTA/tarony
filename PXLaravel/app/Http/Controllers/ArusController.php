@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mesin;
+use App\Models\Arus;
 use Illuminate\Http\Request;
 
-class MesinController extends Controller
+class ArusController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class MesinController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\mesin  $mesin
+     * @param  \App\Models\arus  $arus
      * @return \Illuminate\Http\Response
      */
-    public function show(Mesin $mesin)
+    public function show(Arus $arus)
     {
         //
     }
@@ -52,10 +52,10 @@ class MesinController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\mesin  $mesin
+     * @param  \App\Models\arus  $arus
      * @return \Illuminate\Http\Response
      */
-    public function edit(Mesin $mesin)
+    public function edit(Arus $arus)
     {
         //
     }
@@ -64,10 +64,10 @@ class MesinController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\mesin  $mesin
+     * @param  \App\Models\arus  $arus
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Mesin $mesin)
+    public function update(Request $request, Arus $arus)
     {
         //
     }
@@ -75,10 +75,10 @@ class MesinController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\mesin  $mesin
+     * @param  \App\Models\arus  $arus
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Mesin $mesin)
+    public function destroy(Arus $arus)
     {
         //
     }

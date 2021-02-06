@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMesinsTable extends Migration
+class CreateArusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateMesinsTable extends Migration
      */
     public function up()
     {
-        Schema::create('mesins', function (Blueprint $table) {
+        Schema::create('aruses', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 100);
-            $table->boolean('is_online')->default(false);
-            $table->boolean('is_active')->default(false);
-            $table->boolean('is_on')->default(false);
+            $table->string('alat', 100);
+            $table->string('arus', 100);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +29,6 @@ class CreateMesinsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mesins');
+        Schema::dropIfExists('aruses');
     }
 }
