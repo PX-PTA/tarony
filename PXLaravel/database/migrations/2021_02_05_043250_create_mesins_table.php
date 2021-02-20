@@ -19,6 +19,7 @@ class CreateMesinsTable extends Migration
             $table->boolean('is_online')->default(false);
             $table->boolean('is_active')->default(false);
             $table->boolean('is_on')->default(false);
+            $table->integer('batas_on')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
