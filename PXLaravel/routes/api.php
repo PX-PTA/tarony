@@ -54,28 +54,32 @@ Route::post('/waktu/{device}', function (Request $request,$device) {
     return $newWaktuData;
 });
 
-Route::post('/data/{device}/add', function (Request $request,$device) {
+Route::post('/data/{device}/add', function (Request $request,Mesin $device) {
     $newArusData = null;
     $newGpsData = null;
     $newWaktuData = null;
-    if($request->detik != null){
+    if(!is_null($request->detik)){
         $newWaktuData = new Waktu;
-        $newWaktuData->alat = "Alat ".$device;
+        $newWaktuData->alat = "Alat ".$device->id;
         $newWaktuData->detik = $request->detik;
         $newWaktuData->save();
     }
-    if($request->lang != null && $request->long != null){
+    if(!is_null($request->lang) && !is_null($request->lang)){
         $newGpsData = new Gps;
-        $newGpsData->alat = "Alat ".$device;
+        $newGpsData->alat = "Alat ".$device->id;
         $newGpsData->lang = $request->lang;
         $newGpsData->long = $request->long;
         $newGpsData->save();
     }
-    if($request->arus != null){
+    if(!is_null($request->arus)){
         $newArusData = new Arus;
-        $newArusData->alat = "Alat ".$device;
+        $newArusData->alat = "Alat ".$device->id;
         $newArusData->arus = $request->arus;
         $newArusData->save();
+    }
+    if(!is_null($request->off)){
+        $device->off_avaiable = $request->off;
+        $device->save();
     }
     return [$newWaktuData,$newArusData,$newGpsData];
 });
