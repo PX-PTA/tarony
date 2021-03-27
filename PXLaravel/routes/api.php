@@ -27,12 +27,17 @@ Route::get('/waktu', function () {
     return $waktu;
 });
 
+Route::get('/arus', function () {
+    $arus = Arus::all();
+    return $arus;
+});
+
 Route::get('/gps', function () {
     $gps = Gps::all();
     return $gps;
 });
 
-Route::get('/onoff', function () {
+Route::get('/onOff', function () {
     $mesin = Mesin::first();
     return $mesin;
 });
