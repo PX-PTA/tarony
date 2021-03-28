@@ -38,7 +38,8 @@ Route::get('/device/{device}', function (Mesin $device) {
     $mutable = Carbon::now();
     if($arus){
         if($mutable->add(-5,'minute') > $arus->created_at){
-            $device->is_on = 0;
+            $device->is_online = 0;
+            $device->is_active = 0;
             $device->save();
         }
     }
@@ -60,6 +61,7 @@ Route::post('/data/{device}/add', function (Request $request,Mesin $device) {
     $newGpsData = null;
     $newWaktuData = null;
     $device->is_active = true;
+    $device->is_online = true;
     if(!is_null($request->detik)){
         $newWaktuData = new Waktu;
         $newWaktuData->alat = "Alat ".$device->id;
@@ -71,9 +73,6 @@ Route::post('/data/{device}/add', function (Request $request,Mesin $device) {
         $newArusData->alat = "Alat ".$device->id;
         $newArusData->arus = $request->arus;
         $newArusData->save();
-        if($request->arus > 50){
-            $device->is_on = true;
-        }
     }
     if(!is_null($request->off)){
         $device->off_avaiable = $request->off;
