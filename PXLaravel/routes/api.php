@@ -36,9 +36,11 @@ Route::get('/arus', function () {
 Route::get('/device/{device}', function (Mesin $device) {
     $arus = Arus::latest('created_at')->first();
     $mutable = Carbon::now();
-    if($mutable->add(-5,'minute') > $arus->created_at){
-        $device->is_on = 0;
-        $device->save();
+    if($arus->count() > 0){
+        if($mutable->add(-5,'minute') > $arus->created_at){
+            $device->is_on = 0;
+            $device->save();
+        }
     }
     $waktu = Waktu::where('is_reset',false)->sum('detik');
     $device->waktu = $waktu;
