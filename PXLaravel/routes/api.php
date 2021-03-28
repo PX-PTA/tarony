@@ -59,6 +59,7 @@ Route::post('/data/{device}/add', function (Request $request,Mesin $device) {
     $newArusData = null;
     $newGpsData = null;
     $newWaktuData = null;
+    $device->is_active = true;
     if(!is_null($request->detik)){
         $newWaktuData = new Waktu;
         $newWaktuData->alat = "Alat ".$device->id;
@@ -76,8 +77,8 @@ Route::post('/data/{device}/add', function (Request $request,Mesin $device) {
     }
     if(!is_null($request->off)){
         $device->off_avaiable = $request->off;
-        $device->save();
     }
+    $device->save();
     return [$newWaktuData,$newArusData];
 });
 
