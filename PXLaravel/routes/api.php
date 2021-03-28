@@ -6,6 +6,7 @@ use App\Models\Gps;
 use App\Models\Waktu;
 use App\Models\Mesin;
 use App\Models\Arus;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,32 +24,25 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/waktu', function () {
-    $waktu = Waktu::all();
+    $waktu = Waktu::get()->orderBy('created_at','desc')->take(50);
     return $waktu;
 });
 
 Route::get('/arus', function () {
-    $arus = Arus::all();
+    $arus = Arus::get()->orderBy('created_at','desc')->take(50);
     return $arus;
 });
 
-Route::get('/gps', function () {
-    $gps = Gps::all();
-    return $gps;
-});
-
-Route::get('/onOff', function () {
-    $mesin = Mesin::first();
-    return $mesin;
-});
-
-Route::post('/gps/{device}', function (Request $request,$device) {
-    $newGpsData = new Gps;
-    $newGpsData->alat = "Alat ".$device;
-    $newGpsData->lang = $request->lang;
-    $newGpsData->long = $request->long;
-    $newGpsData->save();
-    return $newGpsData;
+Route::get('/device/{device}', function (Mesin $device) {
+    $arus = Arus::latest('created_at')->first();
+    $mutable = Carbon::now();
+    if($mutable->add(-5,'minute') > $arus->created_at){
+        $device->is_on = 0;
+        $device->save();
+    }
+    $waktu = Waktu::where('is_reset',false)->sum('detik');
+    $device->waktu = $waktu;
+    return $device;
 });
 
 Route::post('/waktu/{device}', function (Request $request,$device) {
@@ -69,28 +63,31 @@ Route::post('/data/{device}/add', function (Request $request,Mesin $device) {
         $newWaktuData->detik = $request->detik;
         $newWaktuData->save();
     }
-    if(!is_null($request->lang) && !is_null($request->lang)){
-        $newGpsData = new Gps;
-        $newGpsData->alat = "Alat ".$device->id;
-        $newGpsData->lang = $request->lang;
-        $newGpsData->long = $request->long;
-        $newGpsData->save();
-    }
     if(!is_null($request->arus)){
         $newArusData = new Arus;
         $newArusData->alat = "Alat ".$device->id;
         $newArusData->arus = $request->arus;
         $newArusData->save();
+        if($request->arus > 50){
+            $device->is_on = true;
+        }
     }
     if(!is_null($request->off)){
         $device->off_avaiable = $request->off;
         $device->save();
     }
-    return [$newWaktuData,$newArusData,$newGpsData];
+    return [$newWaktuData,$newArusData];
 });
 
 Route::post('/onoff/{device}', function (Request $request, Mesin $device) {
     $device->is_on = $request->is_on;
     $device->save();
+    return $device;
+});
+
+Route::get('/reset/{device}', function (Mesin $device) {
+    $waktu = Waktu::where('is_reset',false)->sum('detik');
+    $device->waktu = $waktu;
+    $updateWaktu = DB::table('waktu')->update(array('is_reset' => true));
     return $device;
 });

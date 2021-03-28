@@ -19,6 +19,7 @@ class CreateTableLogWaktu extends Migration
             $table->integer('detik');
             $table->timestamps();
             $table->softDeletes();
+            $table->boolean('is_reset')->default(false);
         });
     }
 
