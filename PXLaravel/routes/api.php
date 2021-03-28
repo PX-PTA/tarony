@@ -36,7 +36,7 @@ Route::get('/arus', function () {
 Route::get('/device/{device}', function (Mesin $device) {
     $arus = Arus::latest('created_at')->first();
     $mutable = Carbon::now();
-    if($arus->count() > 0){
+    if($arus){
         if($mutable->add(-5,'minute') > $arus->created_at){
             $device->is_on = 0;
             $device->save();
