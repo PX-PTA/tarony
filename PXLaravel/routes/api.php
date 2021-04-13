@@ -87,6 +87,12 @@ Route::post('/onoff/{device}', function (Request $request, Mesin $device) {
     return $device;
 });
 
+Route::post('/saveBatas/{device}', function (Request $request, Mesin $device) {
+    $device->batas_on = $request->batas;
+    $device->save();
+    return $device;
+});
+
 Route::get('/reset/{device}', function (Mesin $device) {
     $waktu = Waktu::where('is_reset',false)->sum('detik');
     $device->waktu = $waktu;

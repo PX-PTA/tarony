@@ -21,7 +21,7 @@ class FirstSeeder extends Seeder
             'is_online' => false,
             'is_active' => false,
             'is_on' => false,
-            'batas_on' => 0,
+            'batas_on' => 10
         ]);
     }
 }
