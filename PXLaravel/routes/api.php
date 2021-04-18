@@ -34,10 +34,12 @@ Route::get('/arus', function () {
 });
 
 Route::get('export', function () {
+    $mutable = Carbon::now();
+
     $arus = Arus::orderBy('created_at','desc')->limit(250)->get();
     $waktu =  Waktu::orderBy('created_at','desc')->limit(250)->get();
     
-    $filename = "data.csv";
+    $filename = "data-".$mutable->format("d-m-y h-i-s").".csv";
     $handle = fopen($filename, 'w+');
     fputcsv($handle, array('alat', 'arus', 'waktu', 'created at'));
 
@@ -51,7 +53,7 @@ Route::get('export', function () {
         'Content-Type' => 'text/csv',
     );
 
-    return Response::download($filename, 'data.csv', $headers);
+    return Response::download($filename, 'data-'.$mutable->format("d-m-y h-i-s").'.csv', $headers);
 });
 
 Route::get('/device/{device}', function (Mesin $device) {
