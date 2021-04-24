@@ -60,7 +60,7 @@ Route::get('/device/{device}', function (Mesin $device) {
     $arus = Arus::latest('created_at')->first();
     $mutable = Carbon::now();
     if($arus){
-        if($mutable->add(-5,'minute') > $arus->created_at){
+        if($mutable->add(-2,'minute') > $arus->created_at){
             $device->is_online = 0;
             $device->is_active = 0;
             $device->save();
