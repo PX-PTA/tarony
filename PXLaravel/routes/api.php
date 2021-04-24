@@ -117,7 +117,6 @@ Route::post('/saveBatas/{device}', function (Request $request, Mesin $device) {
 });
 
 Route::get('/reset/{device}', function (Mesin $device) {
-    $device->waktu = 0;
     $device->is_on = false;
     $device->save();
     $updateWaktu = DB::table('waktu')->update(array('is_reset' => true));
