@@ -41,7 +41,7 @@ Route::get('export', function () {
     
     $filename = "data-".$mutable->format("d-m-y h-i-s").".csv";
     $handle = fopen($filename, 'w+');
-    fputcsv($handle, array('Nama Alat', 'Nilai Arus', 'Nilai Detik', 'Waktu Data Masuk'));
+    fputcsv($handle, array('Nama Alat', 'Nilai Tegangan', 'Nilai Detik', 'Waktu sshData Masuk'));
 
     for($i = 0; $i < $arus->count(); $i++){
         fputcsv($handle, array($arus[$i]['alat'], $arus[$i]['arus'],$waktu[$i]['detik'], $arus[$i]['created_at']));
