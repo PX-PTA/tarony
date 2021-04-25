@@ -6,6 +6,7 @@ use App\Models\Gps;
 use App\Models\Waktu;
 use App\Models\Mesin;
 use App\Models\Arus;
+use App\Models\DeviceOnOffHistory;
 use Carbon\Carbon;
 
 /*
@@ -58,22 +59,28 @@ Route::get('export', function () {
 
 Route::get('/device/{device}', function (Mesin $device) {
     $arus = Arus::latest('created_at')->first();
+    $arusTinggi = Arus::where('arus','>',200)->orderBy('created_at','desc')->first();
     $mutable = Carbon::now();
     if($arus){
-        if($mutable->add(-2,'minute') > $arus->created_at){
+        if($mutable->add(-20,'second') > $arus->created_at){
             $device->is_online = 0;
-            $device->is_active = 0;
-            $device->save();
         }
+        if($mutable->add(-20,'second') > $arusTinggi->created_at){
+            if($device->is_on == 1){
+                $device->is_active = 0;
+            }else{
+                $device->is_active = 1;
+            }
+        }
+        $device->save();
     }
     $waktu = Waktu::where('is_reset',false)->sum('detik');
-    $device->waktu = $waktu;
     return $device;
 });
 
 Route::post('/waktu/{device}', function (Request $request,$device) {
     $newWaktuData = new Waktu;
-    $newWaktuData->alat = "Alat ".$device;
+    $newWaktuData->alat = "Mesin Polisher ".$device;
     $newWaktuData->detik = $request->detik;
     $newWaktuData->save();
     return $newWaktuData;
@@ -87,13 +94,13 @@ Route::post('/data/{device}/add', function (Request $request,Mesin $device) {
     $device->is_online = true;
     if(!is_null($request->detik)){
         $newWaktuData = new Waktu;
-        $newWaktuData->alat = "Alat ".$device->id;
+        $newWaktuData->alat = "Mesin Polisher ".$device->id;
         $newWaktuData->detik = $request->detik;
         $newWaktuData->save();
     }
     if(!is_null($request->arus)){
         $newArusData = new Arus;
-        $newArusData->alat = "Alat ".$device->id;
+        $newArusData->alat = "Mesin Polisher ".$device->id;
         $newArusData->arus = $request->arus;
         $newArusData->save();
     }
@@ -105,6 +112,10 @@ Route::post('/data/{device}/add', function (Request $request,Mesin $device) {
 });
 
 Route::post('/onoff/{device}', function (Request $request, Mesin $device) {
+    $newDeviceOnOffHistory = new DeviceOnOffHistory;
+    $newDeviceOnOffHistory->alat = "Mesin Polisher ".$device;
+    $newDeviceOnOffHistory->action = $request->is_on;
+    $newDeviceOnOffHistory->save();
     $device->is_on = $request->is_on;
     $device->save();
     return $device;
@@ -120,5 +131,11 @@ Route::get('/reset/{device}', function (Mesin $device) {
     $device->is_on = 1;
     $device->save();
     $updateWaktu = DB::table('waktu')->update(array('is_reset' => true));
+
+    $newDeviceOnOffHistory = new DeviceOnOffHistory;
+    $newDeviceOnOffHistory->alat = "Mesin Polisher ".$device;
+    $newDeviceOnOffHistory->action = 3;
+    $newDeviceOnOffHistory->save();
+
     return $device;
 });
