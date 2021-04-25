@@ -112,10 +112,10 @@ Route::post('/data/{device}/add', function (Request $request,Mesin $device) {
 });
 
 Route::post('/onoff/{device}', function (Request $request, Mesin $device) {
-    $newDeviceOnOffHistory = new DeviceOnOffHistory;
-    $newDeviceOnOffHistory->alat = "Mesin Polisher ".$device;
-    $newDeviceOnOffHistory->action = $request->is_on;
-    $newDeviceOnOffHistory->save();
+    // $newDeviceOnOffHistory = new DeviceOnOffHistory;
+    // $newDeviceOnOffHistory->alat = "Mesin Polisher ".$device;
+    // $newDeviceOnOffHistory->action = $request->is_on;
+    // $newDeviceOnOffHistory->save();
     $device->is_on = $request->is_on;
     $device->save();
     return $device;
@@ -132,10 +132,10 @@ Route::get('/reset/{device}', function (Mesin $device) {
     $device->save();
     $updateWaktu = DB::table('waktu')->update(array('is_reset' => true));
 
-    $newDeviceOnOffHistory = new DeviceOnOffHistory;
-    $newDeviceOnOffHistory->alat = "Mesin Polisher ".$device;
-    $newDeviceOnOffHistory->action = 3;
-    $newDeviceOnOffHistory->save();
+    // $newDeviceOnOffHistory = new DeviceOnOffHistory;
+    // $newDeviceOnOffHistory->alat = "Mesin Polisher ".$device;
+    // $newDeviceOnOffHistory->action = 3;
+    // $newDeviceOnOffHistory->save();
 
     return $device;
 });
