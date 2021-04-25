@@ -17,7 +17,7 @@ class FirstSeeder extends Seeder
     public function run()
     {
         DB::table('mesins')->insert([
-            'nama' => "Wemos 1",
+            'nama' => "Mesin Polisher 1",
             'is_online' => false,
             'is_active' => false,
             'is_on' => false,

@@ -16,7 +16,7 @@ class CreateDeviceOnOfHistoriesTable extends Migration
         Schema::create('device_on_of_histories', function (Blueprint $table) {
             $table->id();
             $table->string('alat', 100);
-            $table->integer('action', 100);
+            $table->integer('action');
             $table->timestamps();
             $table->softDeletes();
         });
