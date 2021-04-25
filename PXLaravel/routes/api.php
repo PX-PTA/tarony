@@ -75,6 +75,7 @@ Route::get('/device/{device}', function (Mesin $device) {
         $device->save();
     }
     $waktu = Waktu::where('is_reset',false)->sum('detik');
+    $device->waktu = $waktu;
     return $device;
 });
 
