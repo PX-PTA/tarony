@@ -59,7 +59,7 @@ Route::get('export', function () {
 
 Route::get('/device/{device}', function (Mesin $device) {
     $arus = Arus::latest('created_at')->first();
-    $arusTinggi = Arus::where('arus','>',200)->orderBy('created_at','desc')->first();
+    $arusTinggi = Arus::where('arus','>',0.05)->orderBy('created_at','desc')->first();
     $mutable = Carbon::now();
     if($arus){
         if($mutable->add(-20,'second') > $arus->created_at){
