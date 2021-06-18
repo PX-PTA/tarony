@@ -96,7 +96,7 @@ Route::post('/data/{device}/add', function (Request $request,Mesin $device) {
     if(!is_null($request->detik)){
         $newWaktuData = new Waktu;
         $newWaktuData->alat = "Mesin Polisher ".$device->id;
-        $newWaktuData->detik = $request->detik;
+        $newWaktuData->detik = ($request->detik - ($request->detik*0.3));
         $newWaktuData->save();
     }
     if(!is_null($request->arus)){
