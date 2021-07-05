@@ -25,12 +25,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/waktu', function () {
-    $waktu = Waktu::get()->orderBy('created_at','desc')->take(50);
+    $waktu = Waktu::all()->take(10)->orderBy('created_at','desc');
     return $waktu;
 });
 
 Route::get('/arus', function () {
-    $arus = Arus::get()->orderBy('created_at','desc')->take(50);
+    $arus = Arus::all()->take(10)->orderBy('created_at','desc');
     return $arus;
 });
 
@@ -129,7 +129,9 @@ Route::post('/saveBatas/{device}', function (Request $request, Mesin $device) {
 });
 
 Route::get('/reset/{device}', function (Mesin $device) {
-    $device->is_on = 1;
+    $device->is_active = false;
+    $device->is_online = false;
+    $device->is_on = 0;
     $device->save();
     $updateWaktu = DB::table('waktu')->update(array('is_reset' => true));
 
