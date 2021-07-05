@@ -62,10 +62,10 @@ Route::get('/device/{device}', function (Mesin $device) {
     $arusTinggi = Arus::where('arus','>',0.05)->orderBy('created_at','desc')->first();
     $mutable = Carbon::now();
     if($arus){
-        if($mutable->add(-20,'second') > $arus->created_at){
+        if($mutable->subSeconds(-20) > $arus->created_at){
             $device->is_online = 0;
         }
-        if($mutable->add(-20,'second') > $arusTinggi->created_at){
+        if($mutable->subSeconds(-20) > $arusTinggi->created_at){
             if($device->is_on == 1){
                 $device->is_active = 0;
             }else{
