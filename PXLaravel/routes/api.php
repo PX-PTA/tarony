@@ -79,6 +79,28 @@ Route::get('/device/{device}', function (Mesin $device) {
     return $device;
 });
 
+Route::get('/devices/{device}', function (Mesin $device) {
+    $arus = Arus::latest('created_at')->first();
+    $arusTinggi = Arus::where('arus','>',0.05)->orderBy('created_at','desc')->first();
+    $mutable = Carbon::now();
+    if($arus){
+        if($mutable->subSeconds(-20) > $arus->created_at){
+            $device->is_online = 0;
+        }
+        if($mutable->subSeconds(-20) > $arusTinggi->created_at){
+            if($device->is_on == 1){
+                $device->is_active = 0;
+            }else{
+                $device->is_active = 1;
+            }
+        }
+        $device->save();
+    }
+    $waktu = Waktu::where('is_reset',false)->sum('detik');
+    $device->waktu = $waktu;
+    return $device;
+});
+
 Route::post('/waktu/{device}', function (Request $request,$device) {
     $newWaktuData = new Waktu;
     $newWaktuData->alat = "Mesin Polisher ".$device;
